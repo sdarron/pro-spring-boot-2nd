@@ -1,0 +1,4 @@
+com/appress/todo/domain/ToDo.class
+com/appress/todo/config/ToDoConfig.class
+com/appress/todo/controller/ToDoController.class
+com/appress/todo/repository/ToDoRepository.class
