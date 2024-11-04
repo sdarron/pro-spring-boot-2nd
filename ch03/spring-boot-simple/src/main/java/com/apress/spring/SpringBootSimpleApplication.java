@@ -1,50 +1,71 @@
 package com.apress.spring;
 
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.Banner;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @SpringBootApplication
 public class SpringBootSimpleApplication {
 
+	private static Logger log = LoggerFactory.getLogger(SpringBootSimpleApplication.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSimpleApplication.class, args);
-//		Logger log = LoggerFactory.getLogger(SpringBootSimpleApplication.class);
-//		new SpringApplicationBuilder(SpringBootSimpleApplication.class)
-//				.listeners(new ApplicationListener<ApplicationEvent>() {
-//					@Override
-//					public void onApplicationEvent(ApplicationEvent event) {
-//						log.info("#### > " + event.getClass().getCanonicalName());
-//					}
-//				})
-//				.run(args);
+	}
+
+	@Value("${myapp.server-ip}")
+	String serverIp;
+
+	@Autowired
+	MyAppProperties props;
+
+	@Bean
+	CommandLineRunner values(){
+		return args -> {
+			log.info(" > The Server IP is: " + serverIp);
+			log.info(" > App Name: " + props.getName());
+			log.info(" > App Info: " + props.getDescription());
+		};
 	}
 
 	@Component
-	class MyComponent {
-		private static final Logger log = LoggerFactory.getLogger(MyComponent.class);
+	@ConfigurationProperties(prefix="myapp")
+	public static class MyAppProperties{
+		private String name;
+		private String description;
+		private String serverIp;
 
-		@Autowired
-		public MyComponent(ApplicationArguments args){
-			boolean enable = args.containsOption("enable");
-			if(enable)
-				log.info("## > You are enabled!");
-			List<String> _args = args.getNonOptionArgs();
-				log.info("## > extra args...");
-			if(!_args.isEmpty())
-				_args.forEach(file -> log.info(file));
-
+		public String getName(){
+			return name;
 		}
+
+		public void setName(String name){
+			this.name = name;
+		}
+
+		public String getDescription(){
+			return description;
+		}
+		public void setDescription(String description){
+			this.description = description;
+		}
+
+		public String getServerIp(){
+			return serverIp;
+		}
+		public void setServerIp(String serverIp){
+			this.serverIp = serverIp;
+		}
+
 	}
 
 }
