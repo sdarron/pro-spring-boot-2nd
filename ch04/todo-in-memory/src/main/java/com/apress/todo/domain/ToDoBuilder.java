@@ -26,6 +26,4 @@ public class ToDoBuilder {
             result.setId(id);
         return result;
     }
-
-
 }
