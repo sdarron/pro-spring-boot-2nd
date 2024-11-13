@@ -2,6 +2,7 @@ package com.apress.todo.repository;
 
 import com.apress.todo.domain.ToDo;
 import org.springframework.boot.info.InfoProperties;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Repository
 public class ToDoRepository implements CommonRepository<ToDo>{
 
     private Map<String, ToDo> toDos = new HashMap<>();
